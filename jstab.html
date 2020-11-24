@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <mata charset="utf-8"/>
+    <title>fabric test</title>
+    <link rel="stylesheet" href="jstab.css">
+    <script src="fabric.js"></script>
+    <script src="HUB.js"></script>
+  </head>
+  <body>
+    <!-- メニューバー -->
+    <header>
+      <from>
+        <input type = "button" value = "拡大" onclick = "CallCanvasZoomMethod('ZoomIn')">
+        <input type = "button" value = "縮小" onclick = "CallCanvasZoomMethod('ZoomOut')">
+        <input type = "button" value = "↩" onclick = "CallBack()">
+      　<input type = "button" value = "↪" onclick = "SendTo()">
+        <input type = "button" value = "削除" onclick = "CallRemoveMethod('Remove')">
+        <input type = "button" value = "全削除" onclick = "CallRemoveMethod('RemoveAll')">
+        <input type = "checkbox" id = "checkbox1" /><label for="checkbox1">グリッド線</label>
+        <input type = "button" id= "save" value = "保存" onclick = "CallSaveMethod()">
+      </from>
+    </header>
+    <!-- パーツウィンドウ -->
+    <aside id="left">
+      <div class="tabs">
+        <input id="all" type="radio" name="tab_item" checked>
+        <label class="tab_item" for="all">パーツ</label>
+        <input id="programming" type="radio" name="tab_item">
+        <label class="tab_item" for="programming">写真</label>
+        <input id="design" type="radio" name="tab_item">
+        <label class="tab_item" for="design">テンプレ</label>
+        <div class="tab_content" id="all_content">
+          <h3 id="top">図形</h3></br>
+          <from>
+            <input type = "image" value = "クリックして！" src = "orange_rect.png" onclick="CallCreateMethod('Rect')">
+            <input type = "image" value = "クリックして！" src = "red_circle.png" onclick="CallCreateMethod('Circle')"></br>
+          </from>
+          <h3 id="nomal">機能</h3></br>
+          <from>
+            <a href="http://twitter.com/share?hashtags=山田孝之" target="_blank"><img src="twitter.png" width="50" height="50"></img></a></br>
+          </from>
+          <h3 id="nomal">テキスト</h3></br>
+          <from>
+            <input type = "image" value = "クリックして！" src = "Text.png" onclick="CallCreateMethod('Text')">
+          </from>
+        </div>
+        <div class="tab_content" id="programming_content">
+            写真の内容がここに入ります
+            <from>
+              <input type = "image" src = "pasta.jpg" onclick="CallCreateMethod('Imag')">
+            </from>
+      </div>
+        <div class="tab_content" id="design_content">
+            テンプレートの内容がここに入ります
+      </div>
+    </aside>
+    <!-- 編集ウィンドウ -->
+    <aside id="right">
+      <h3 id="top">編集ウィンドウ</h3>
+        <from>
+          フォント:</br>
+          <input type = "button" value = "Text変更" onclick = "CallChangeFont()"></br>
+          カラー:</br>
+          パーツの色:<input type = "color" id = "Diagram_color">
+          <input type = "button" value = "適用" onclick = "CallColorChange('Diagram')">
+          </br>
+          フレーム色:<input type = "color" id = "Frame_color">
+          <input type = "button" value = "適用" onclick = "CallColorChange('Frame')">
+          </br>
+          配　置:</br>
+          <input type = "button" value = "前面へ" onclick = "CallMovelayerMethod('Top')">
+          <input type = "button" value = "背面へ" onclick = "CallMovelayerMethod('Bottom')"></br>
+          x軸:<input type = "number" id = "position_left" value = "0"></br>
+          y軸:<input type = "number" id = "position_top" value = "0"></br>
+          <input type = "button" value = "適用" onclick = "Call_Position_Change()"></br>
+          サイズ:</br>
+          <input type = "button" value = "+20%" onclick = "CallObjectZoomMethod('ZoomIn')"> 
+          <input type = "button" value = "-20%" onclick = "CallObjectZoomMethod('ZoomOut')"></br>
+          <input type = "button" value = "Clone"onclick="CallCreateMethod('Clone')">
+          <input type = "button" value = "Test" onclick="Test()"></br>
+          <input type = "file" id = "aaa">   
+        </from>
+        <h3 id="nomal">URL設定</h3></br>
+        <from>
+          <input type = "text" id = "URLBox" value = "">
+          <input type = "button" value = "URLを設定する" onclick = "CallSettingMethod()">
+        </from>
+    </aside>
+    <!-- キャンバス -->
+    <div id="canvas_wrapper" >
+      <canvas id="canvas" width="600" height="600" style="border:1px solid;"></canvas>
+    </div>
+    <canvas hidden id="Startup_canvas" width="1400" height="1400" style="border:1px solid;"></canvas>
+    <script type = "text/javascript">
+      var link_data = [];
+      var cnt = 0;
+      var Select;
+      const default_canvas_size = 600;
+      var canvas_size = default_canvas_size;
+      </script>
+
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+    <script type = "text/javascript">var canvasA = new fabric.Canvas('canvas',{preserveObjectStacking: true});</script>
+    <script type = "text/javascript">
+    document.getElementById("Startup_canvas").style.display="none";
+    var canvasB = new fabric.Canvas('Startup_canvas');
+    </script>
+    <script src="create.js"></script>
+    <script src="grid.js"></script>
+    <script src= "url.js"></script>
+    <script src= "getdata.js"></script>
+    <script src= "remove.js"></script>
+    <script src= "layer.js"></script>
+    <script src= "Canvas_Zoom.js"></script>
+    <script src= "obj_Zoom.js"></script>
+    <script src= "Back_to_screen.js"></script>
+    <script src= "startup.js"></script>
+    <script src= "Obj_position.js"></script>
+    <script src= "Color_Cange.js"></script>
+    <script src= "font.js"></script>
+    <script src="save.js"></script>
+    <script>
+
+      var tempCanvas;
+      var bool = true;
+      Grid_Img = Startup(canvasB);
+      var tmp_undo = [];
+      var save = document.getElementById('save');
+      var group = [];
+      var group_number = 0;
+
+      function Test(){
+        console.log("hoge");
+        fabric.loadSVGFromURL('http://localhost:8080/menu10.svg', function(objects)  {
+          for (let i in objects) {
+            group[group_number] = new fabric.Rect(objects[i],{});
+            canvasA.add(group[group_number]);
+            canvasA.renderAll();
+            group_number += 1;
+          }
+          /*group[group_number] = new fabric.Rect(objects[0],{});
+          canvasA.add(group[group_number]);
+          canvasA.renderAll();
+          group_number += 1;
+        });*/
+        });
+      }
+      /*var site_url =  'http://fabricjs.com/assets/1.svg';
+      fabric.loadSVGFromURL(site_url, function(objects) { 
+          var group = new fabric.Group(objects, { 
+          left: 165, 
+          top: 100, 
+          width: 295, 
+          height: 211 
+        }); 
+        //canvasA.add(group); 
+        canvasA.renderAll(); 
+          }); */
+
+      $(function(){
+  //トグルボタン定義
+        $("#checkbox1").button();
+        $("#checkbox1").click(function(){
+          var a = $("#checkbox1").prop("checked");
+          if(a){
+            canvasA.setBackgroundImage(null, canvasA.renderAll.bind(canvasA));
+            bool = false;
+          }else{
+            //bool = canvasA.add("newImg");
+            canvasA.setBackgroundImage(Grid_Img, canvasA.renderAll.bind(canvasA));
+            bool = true;
+          }
+        });
+      });
+      canvasA.on('selection:created', function(options) {
+        tmp_undo.push(canvasA.toDatalessJSON());
+      });
+      canvasA.on('object:modified', function(option){
+        undo.push(tmp_undo.pop());
+        redo = [];
+        tmp_undo.push(canvasA.toDatalessJSON());
+      })  
+      canvasA.on('object:moving', function(options) { 
+        if(bool == true){
+        options.target.set({
+          left: Math.round(options.target.left / Smallgrid) * Smallgrid,
+          top: Math.round(options.target.top / Smallgrid) * Smallgrid
+        });
+        }
+      });
+      canvasA.on('object:moving', function(options) { 
+        if(Select.left <= 0)
+          options.target.set({left:0});
+        if(Select.top <= 0)
+          options.target.set({top:0});
+        if(Select.left + (Select.width * Select.scaleX) >= canvas_size)
+          options.target.set({left:canvas_size - (Select.width * Select.scaleX)});
+        if(Select.top + (Select.height * Select.scaleY) >= canvas_size)
+          options.target.set({top:canvas_size - (Select.height * Select.scaleY)});
+      });
+      canvasA.on('object:scaling', options => {
+        if(bool == true){
+          var target = options.target,
+          w = target.width * target.scaleX,
+          h = target.height * target.scaleY,
+          snap = { // Closest snapping points
+            top: Math.round(target.top / Smallgrid) * Smallgrid,
+            left: Math.round(target.left / Smallgrid) * Smallgrid,
+            bottom: Math.round((target.top + h) / Smallgrid) * Smallgrid,
+            right: Math.round((target.left + w) / Smallgrid) * Smallgrid
+          },
+          threshold = Smallgrid,
+          dist = { // Distance from snapping points
+            top: Math.abs(snap.top - target.top),
+            left: Math.abs(snap.left - target.left),
+            bottom: Math.abs(snap.bottom - target.top - h),
+            right: Math.abs(snap.right - target.left - w)
+          },
+          attrs = {
+            scaleX: target.scaleX,
+            scaleY: target.scaleY,
+            top: target.top,
+            left: target.left
+          };
+          switch (target.__corner) {
+            case 'tl':
+              if (dist.left < dist.top && dist.left < threshold) {
+                attrs.scaleX = (w - (snap.left - target.left)) / target.width;
+                attrs.scaleY = (attrs.scaleX / target.scaleX) * target.scaleY;
+                attrs.top = target.top + (h - target.height * attrs.scaleY);
+                attrs.left = snap.left;
+              } else if (dist.top < threshold) {
+                attrs.scaleY = (h - (snap.top - target.top)) / target.height;
+                attrs.scaleX = (attrs.scaleY / target.scaleY) * target.scaleX;
+                attrs.left = attrs.left + (w - target.width * attrs.scaleX);
+                attrs.top = snap.top;
+              }
+              break;
+            case 'mt':
+              if (dist.top < threshold) {
+                attrs.scaleY = (h - (snap.top - target.top)) / target.height;
+                attrs.top = snap.top;
+              }
+              break;
+            case 'tr':
+              if (dist.right < dist.top && dist.right < threshold) {
+                attrs.scaleX = (snap.right - target.left) / target.width;
+                attrs.scaleY = (attrs.scaleX / target.scaleX) * target.scaleY;
+                attrs.top = target.top + (h - target.height * attrs.scaleY);
+              } else if (dist.top < threshold) {
+                attrs.scaleY = (h - (snap.top - target.top)) / target.height;
+                attrs.scaleX = (attrs.scaleY / target.scaleY) * target.scaleX;
+                attrs.top = snap.top;
+              }
+              break;
+            case 'ml':
+              if (dist.left < 40) {
+                attrs.scaleX = (w - (snap.left - target.left)) / target.width;
+                attrs.left = snap.left;
+              }
+              break;
+            case 'mr':
+              if (dist.right < threshold) {
+                attrs.scaleX = (snap.right - target.left) / target.width;
+              }
+              break;
+            case 'bl':
+              if (dist.left < dist.bottom && dist.left < threshold) {
+                attrs.scaleX = (w - (snap.left - target.left)) / target.width;
+                attrs.scaleY = (attrs.scaleX / target.scaleX) * target.scaleY;
+                attrs.left = snap.left;
+              } else if (dist.bottom < threshold) {
+                attrs.scaleY = (snap.bottom - target.top) / target.height;
+                attrs.scaleX = (attrs.scaleY / target.scaleY) * target.scaleX;
+                attrs.left = attrs.left + (w - target.width * attrs.scaleX);
+              }
+              break;
+            case 'mb':
+              if (dist.bottom < threshold) {
+                attrs.scaleY = (snap.bottom - target.top) / target.height;
+              }
+              break;
+            case 'br':
+              if (dist.right < dist.bottom && dist.right < threshold) {
+                attrs.scaleX = (snap.right - target.left) / target.width;
+                attrs.scaleY = (attrs.scaleX / target.scaleX) * target.scaleY;
+              } else if (dist.bottom < threshold) {
+                attrs.scaleY = (snap.bottom - target.top) / target.height;
+                attrs.scaleX = (attrs.scaleY / target.scaleY) * target.scaleX;
+              }
+              break;
+          }
+        } 
+        target.set(attrs);
+      });
+    </script>
+  </body>
+</html>
